@@ -42,7 +42,7 @@ knn = KNeighborsClassifier(n_neighbors = 5)
 knn.fit(X_train, y_train)
 
 # Save the trained model for later use
-dump(model, 'KNN.joblib')
+dump(knn, 'KNN.joblib')
 
 # Load the trained model
 loaded_model = load('KNN.joblib')
