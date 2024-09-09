@@ -3,7 +3,7 @@ import pandas as pd
 import numpy as np
 from sklearn.model_selection import train_test_split
 from sklearn.neighbors import KNeighborsClassifier
-from sklearn.preprocessing import LabelEncoder
+from sklearn.preprocessing import LabelEncoder, StandardScaler
 from sklearn.impute import SimpleImputer
 from joblib import dump, load
 
@@ -37,15 +37,22 @@ y = data['diabetes']
 # Split data into training and testing sets
 X_train, X_test, y_train, y_test = train_test_split(X, y, train_size=0.8, random_state=42)
 
-# Train the Logistic Regression model
-knn = KNeighborsClassifier(n_neighbors = 5)
-knn.fit(X_train, y_train)
+# Apply feature scaling
+scaler = StandardScaler()
+X_train_scaled = scaler.fit_transform(X_train)
+X_test_scaled = scaler.transform(X_test)
+
+# Train the KNN model
+knn = KNeighborsClassifier(n_neighbors=5)
+knn.fit(X_train_scaled, y_train)
 
 # Save the trained model for later use
 dump(knn, 'KNN.joblib')
+dump(scaler, 'scaler.joblib')  # Save the scaler as well
 
-# Load the trained model
+# Load the trained model and scaler
 loaded_model = load('KNN.joblib')
+loaded_scaler = load('scaler.joblib')
 
 # --- Streamlit UI ---
 st.title('Diabetes Prediction App')
@@ -93,8 +100,11 @@ if st.button('Predict'):
     # Ensure columns are in the same order as in X_train
     new_data = new_data[expected_columns]
 
+    # Apply the same scaling as the training data
+    new_data_scaled = loaded_scaler.transform(new_data)
+
     # Make a prediction
-    prediction = loaded_model.predict(new_data)
+    prediction = loaded_model.predict(new_data_scaled)
 
     # Display the prediction with informative messages
     if prediction[0] == 1:
