@@ -42,10 +42,10 @@ knn = KNeighborsClassifier(n_neighbors = 5)
 knn.fit(X_train, y_train)
 
 # Save the trained model for later use
-dump(model, 'LogisticRegression.joblib')
+dump(model, 'KNN.joblib')
 
 # Load the trained model
-loaded_model = load('LogisticRegression.joblib')
+loaded_model = load('KNN.joblib')
 
 # --- Streamlit UI ---
 st.title('Diabetes Prediction App')
