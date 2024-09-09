@@ -8,10 +8,10 @@ from sklearn.impute import SimpleImputer
 from joblib import dump, load
 
 # Replace this with the actual file path on your system
-file_path = 'diabetes_prediction_dataset.csv'
+file = 'diabetes_prediction_dataset.csv'
 
 # Load data from the hardcoded file path
-data = pd.read_csv(file_path)
+data = pd.read_csv(file)
 
 # Handle missing values (if any)
 imputer = SimpleImputer(strategy='mean')  # You can change strategy as needed
